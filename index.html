@@ -7,31 +7,52 @@
 </head>
 <body>
     <h1>Bat Ball Game</h1>
-    <button onclick="
+    <button class="choice-button" onclick="
     let choice=generateComCh(); 
-//checking the result
-   let result=generateResult('Bat', choice)
-   
-    alert(`you have chosen Bat. Computer choice is ${choice} and ${result}`);
-     
-    ">Bat</button>
+    let result=generateResult('Bat', choice)
+    showResult('Bat',choice,result); 
+    ">
+    <img src="images/cricket-bat.png" alt="Bat button" class="choice-image"></button>
     
-    <button onclick="
+    <button class="choice-button" onclick="
     choice=generateComCh();
-    //checking the result
-     result=generateResult('Ball', choice)
-    
-   
-    alert(`you have chosen Ball. Computer choice is ${choice} and ${result}`);">Ball</button>
+     result=generateResult('Ball', choice);
+     showResult('Ball',choice,result);
+     "> <img src="images/ball5.png" alt="Ball button" class="choice-image"></button>
 
-    <button onclick="
-      choice=generateComCh();
-    //checking the result
-    result=generateResult('Stumps', choice)
-   
-    alert(`you have chosen Stumps. Computer choice is ${choice} and ${result}`);">Stumps</button>
+
+    <button class="choice-button" onclick="
+    choice=generateComCh();
+     result=generateResult('Stumps', choice)
+     showResult('Stumps',choice,result);
+     "> <img src="images/stumps4.png" alt="Stumps button" class="choice-image"></button>
+
+
+     <h3 id="user-move"></h3>
+     <h3 id="computer-move"></h3>
+     <h3 id="result"></h3>
+     <h3 id="score"></h3>
+
+     <button onclick="
+     localStorage.clear();
+    resetScore();
+     ">Reset score</button>
     <script>
-    
+       let scoreStr = localStorage.getItem('Score');
+       let score;      
+       resetScore(scoreStr);
+       function resetScore(scoreStr){
+        score= scoreStr? JSON.parse(scoreStr) :{
+         win:0,
+         lose:0,
+         tie:0,
+        };
+
+        score.displayScore=function(){
+            return `Won:${score.win} Lose:${score.lose} Tie:${score.tie}`;
+        }
+        showResult();
+       }
 
     function generateComCh(){        
     let randomChoice=Math.random()*3;
@@ -52,27 +73,49 @@
 
     function generateResult(userMove, computerMove){
        if(userMove===computerMove){
-        return 'it is a tie';
+        score.tie++;
+        return 'It is a tie';
         }else if(userMove==='Bat'){
              if(computerMove==='Ball'){
-              return 'you won';
+                score.win++;
+              return 'You won';
              } else{
-                return 'you lose';
+                score.lose++;
+                return 'You lose';
              }
         }else if(userMove==='Ball'){
              if(computerMove==='Bat'){
-              return 'you lose';
+                score.lose++;
+              return 'You lose';
              }else{
-              return 'you won';
+                score.win++;
+              return 'You won';
              }
         }else if(userMove==='Stumps'){
             if(computerMove==='Bat'){
-           return 'you won ';
+                score.win++;
+             return 'You won ';
             }else if(computerMove==='Ball'){
-           return 'you lose';
+                score.lose++;
+            return 'You lose';
             }
         }
  }
+ 
+ function showResult(userMove,choice,result){
+    localStorage.setItem('Score',JSON.stringify(score));
+
+    document.querySelector('#user-move').innerText=
+    userMove!==undefined ?`You have chosen ${userMove}`: '';
+
+    document.querySelector('#computer-move').innerText=
+    choice!==undefined ?` Computer choice is ${choice}`: '';
+
+    document.querySelector('#result').innerText=
+    result!==undefined ?result: '';
+
+    document.querySelector('#score').innerText=score.displayScore();
+    }
     
     </script>
 </body>

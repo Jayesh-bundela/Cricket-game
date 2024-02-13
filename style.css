@@ -1,3 +1,16 @@
 body{
     text-align: center;
+    background-color: darkcyan;
+}
+.choice-button{
+    height: 100px;
+    width :100px;
+    background-color: rgb(236, 104, 33);
+    border: 2px solid black;
+    margin: 10px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+.choice-image{
+    height: 70px;
 }
